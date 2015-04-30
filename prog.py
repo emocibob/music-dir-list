@@ -1,33 +1,52 @@
 from os import walk, path, name
-from re import compile, sub, UNICODE
+from re import sub, UNICODE
 from time import time
 from codecs import open as codecsOpen
 
 OS_NAME = name
-TOP_DIR = '.'
+TOP_DIR = 'Test'
 SEP = '    '
+
+
+def dirDepth(path):
+
+    if OS_NAME == 'nt':    # windows
+
+        return path.count('\\')
+
+    elif OS_NAME == 'posix':    # linux (among others)
+
+        print('  Program not supported for your OS. Exiting.')
+        exit()
+
+    else:
+
+        print('  Program not supported for your OS. Exiting.')
+        exit()
 
 
 def writeLineInFile(path, dat):
 
-    # TODO add working subs for linux
+    # TODO add linux support
 
-    if artistDir.match(path):
-        line = sub('[^\\\\]*\\\\', '', path)
+    depth = dirDepth(path)
 
-    elif albumDir.match(path):
+    if depth == 1:
+        line = '\n' + sub('[^\\\\]*\\\\', '', path)
+
+    elif depth == 2:
         line = sub('[^\\\\]*\\\\', '', path, count=2)
         line = SEP + '- ' + line
 
-    elif albumSubdirs.match(path):
+    elif depth >= 3:
         if userOtherDirs == 1:
-            line = sub('[^\\\\]*\\\\', '', path, count=3)
-            line = SEP + SEP + '- ' + line
+            path = sub('[^\\\\]*\\\\', '', path, count=depth-1)
+            line = SEP * (depth-1) + '- ' + path
         else:
             return
 
     else:
-        print('Error during regex matching. Exiting.')
+        print('  Error during regex matching. Exiting.')
         dat.close()
         exit()
 
@@ -36,35 +55,10 @@ def writeLineInFile(path, dat):
     return
 
 
-def regexDirLevels():
-
-    topDirRE = TOP_DIR.replace('.', '\.')
-
-    if OS_NAME == 'nt':    # windows
-
-        dirLevelRE = '(\\\\[^\\\\]+)'    # match '\something'
-        artistDir = compile(topDirRE + dirLevelRE + '$', UNICODE)
-        albumDir = compile(topDirRE + dirLevelRE + '{2}$', UNICODE)
-        albumSubdirs = compile(topDirRE + dirLevelRE + '{3,}$', UNICODE)
-
-    elif OS_NAME == 'posix':    # linux (among others)
-
-        exit()
-        # TODO fix linux support
-        albumDir = compile('\./(.*?)/')
-        albumSubdirs = compile('\./(.*?)/(.*?)/')
-
-    else:
-
-        print('Program not supported for your OS. Exiting.')
-        exit()
-
-    return artistDir, albumDir, albumSubdirs
-
-
 def dirToFile():
 
-    first = True
+    firstDir = True
+    firstLineInFile = True
 
     if userFileFormat == 1:
         dat = codecsOpen('music_list.txt', 'w', encoding='utf-8')
@@ -75,8 +69,8 @@ def dirToFile():
     walk produces 3 values for every iteration: path to the dir, subdirs in that dir, files in that dir
     '''
     for root, dirs, files in walk(TOP_DIR):
-        if first:
-            first = False
+        if firstDir:
+            firstDir = False
             continue
         else:
             writeLineInFile(path.join(root), dat)
@@ -86,19 +80,20 @@ def dirToFile():
     return
 
 
-artistDir, albumDir, albumSubdirs = regexDirLevels()
-userFileFormat = int(input('List in .txt [1] or .md [2] file? '))
-userOtherDirs = int(input('List 3+ level directories (not artists or albums) [0 or 1]? '))
+if __name__ == "__main__":
 
-startTime = time()
+    userFileFormat = int(input('  List in .txt [1] or .md [2] file? '))
+    userOtherDirs = int(input('  List 3+ level directories (not artists or albums) [0 or 1]? '))
 
-if (userFileFormat in [1, 2]) and (userOtherDirs in [0, 1]):
-    dirToFile()
+    startTime = time()
 
-else:
-    print('Input error.')
+    if (userFileFormat in [1, 2]) and (userOtherDirs in [0, 1]):
+        dirToFile()
 
-endTime = time()
+    else:
+        print('  Input error.')
 
-print('Run time: ' + str(endTime - startTime) + ' s.')
-input('Press any key to exit.')
+    endTime = time()
+
+    print('  Run time: ' + str(endTime - startTime) + ' s.')
+    input('  Press any key to exit.')
