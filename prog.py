@@ -1,14 +1,16 @@
-from os import walk, path, name
+from os import walk, name as osName
 from re import sub
 from time import time
 from codecs import open as codecsOpen
 
-OS_NAME = name
-TOP_DIR = '.'
+
+OS_NAME = osName
+TOP_DIR = 'C:\\Users\\Edvin\\Music'    # TODO pass TOP_DIR as argv[1]
 SEP = '    '
 FIRST_LINE = True
 ARTIST_COUNT = 0
 ALBUM_COUNT = 0
+
 
 def dirDepth(path):
 
@@ -43,7 +45,6 @@ def writeLineInFile(path, dat):
             line = '\n' + line
         ARTIST_COUNT += 1
 
-
     elif depth == 2:
         line = sub('[^\\\\]*\\\\', '', path, count=2)
         line = SEP + '- ' + line
@@ -61,7 +62,7 @@ def writeLineInFile(path, dat):
         dat.close()
         exit()
 
-    dat.write(str(line + '\n'))
+    dat.write(line + '\n')
 
     return
 
@@ -69,8 +70,6 @@ def writeLineInFile(path, dat):
 def dirToFile():
 
     firstDir = True
-    albumCount = 0
-    artistCount = 0
 
     if userFileFormat == 1:
         dat = codecsOpen('music_list.txt', 'w', encoding='utf-8')
@@ -85,7 +84,8 @@ def dirToFile():
             firstDir = False
             continue
         else:
-            writeLineInFile(path.join(root), dat)
+            path = root[len(TOP_DIR):]    # remove the TOP_DIR substring
+            writeLineInFile(path, dat)
 
     dat.write('\n----------\n\n')
     dat.write('No. of artists: ' + str(ARTIST_COUNT) + '\n')
