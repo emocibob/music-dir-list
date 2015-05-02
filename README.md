@@ -15,7 +15,7 @@ Artist C
 ..[YEAR] Album 4
 ```
 
-Output example. The album subdirs can be, if specified so, removed from the output.
+Output file example. The album subdirs can be, if specified so, removed from the output.
 ```
 Artist A
     - [YEAR] Album 1
