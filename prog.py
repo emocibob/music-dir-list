@@ -1,12 +1,14 @@
 from os import walk, path, name
-from re import sub, UNICODE
+from re import sub
 from time import time
 from codecs import open as codecsOpen
 
 OS_NAME = name
-TOP_DIR = 'Test'
+TOP_DIR = '.'
 SEP = '    '
-
+FIRST_LINE = True
+ARTIST_COUNT = 0
+ALBUM_COUNT = 0
 
 def dirDepth(path):
 
@@ -28,19 +30,28 @@ def dirDepth(path):
 def writeLineInFile(path, dat):
 
     # TODO add linux support
-
+    global FIRST_LINE
+    global ARTIST_COUNT
+    global ALBUM_COUNT
     depth = dirDepth(path)
 
     if depth == 1:
-        line = '\n' + sub('[^\\\\]*\\\\', '', path)
+        line = sub('[^\\\\]*\\\\', '', path)
+        if FIRST_LINE:
+            FIRST_LINE = False
+        else:
+            line = '\n' + line
+        ARTIST_COUNT += 1
+
 
     elif depth == 2:
         line = sub('[^\\\\]*\\\\', '', path, count=2)
         line = SEP + '- ' + line
+        ALBUM_COUNT += 1
 
     elif depth >= 3:
         if userOtherDirs == 1:
-            path = sub('[^\\\\]*\\\\', '', path, count=depth-1)
+            path = sub('[^\\\\]*\\\\', '', path, count=depth)
             line = SEP * (depth-1) + '- ' + path
         else:
             return
@@ -58,7 +69,8 @@ def writeLineInFile(path, dat):
 def dirToFile():
 
     firstDir = True
-    firstLineInFile = True
+    albumCount = 0
+    artistCount = 0
 
     if userFileFormat == 1:
         dat = codecsOpen('music_list.txt', 'w', encoding='utf-8')
@@ -74,6 +86,10 @@ def dirToFile():
             continue
         else:
             writeLineInFile(path.join(root), dat)
+
+    dat.write('\n----------\n\n')
+    dat.write('No. of artists: ' + str(ARTIST_COUNT) + '\n')
+    dat.write('No. of albums: ' + str(ALBUM_COUNT))
 
     dat.close()
 
