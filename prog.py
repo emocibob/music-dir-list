@@ -57,7 +57,7 @@ def writeLineInFile(path, dat):
             return
 
     else:
-        print('  Error during regex matching. Exiting.')
+        print('  Error in calculating path depth. Exiting.')
         dat.close()
         exit()
 
