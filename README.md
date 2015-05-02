@@ -28,4 +28,9 @@ Artist B
 Artist C
     - [YEAR] Album 3
     - [YEAR] Album 4
+
+----------
+
+No. of artists: 3
+No. of albums: 4
 ```
