@@ -5,7 +5,7 @@ from codecs import open as codecsOpen
 
 
 OS_NAME = osName
-TOP_DIR = 'C:\\Users\\Edvin\\Music'    # TODO pass TOP_DIR as argv[1]
+TOP_DIR = 'C:\\Users\\Edvin\\Music'
 SEP = '    '
 FIRST_LINE = True
 ARTIST_COUNT = 0
@@ -15,23 +15,14 @@ ALBUM_COUNT = 0
 def dirDepth(path):
 
     if OS_NAME == 'nt':    # windows
-
         return path.count('\\')
-
-    elif OS_NAME == 'posix':    # linux (among others)
-
-        print('  Program not supported for your OS. Exiting.')
-        exit()
-
     else:
-
         print('  Program not supported for your OS. Exiting.')
         exit()
 
 
 def writeLineInFile(path, dat):
 
-    # TODO add linux support
     global FIRST_LINE
     global ARTIST_COUNT
     global ALBUM_COUNT
@@ -105,7 +96,6 @@ if __name__ == "__main__":
 
     if (userFileFormat in [1, 2]) and (userOtherDirs in [0, 1]):
         dirToFile()
-
     else:
         print('  Input error.')
 

@@ -1,8 +1,9 @@
 # music-dir-list
 
-The purpose of the program is to list my Music directory into a `txt` or `md` file.
+A script which lists my `Music` directory into a `txt` or `md` file.
+The script is written to run on Windows.
 
-Example of the structure for the Music directory.
+Example of the structure for the `Music` directory.
 ```
 Artist A
 ..[YEAR] Album 1
