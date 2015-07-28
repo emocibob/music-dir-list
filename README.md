@@ -1,6 +1,6 @@
 ﻿# music-dir-list
 
-A script which lists my `Music` directory into a `txt` or `md` file.
+A Python 3 script which lists my `Music` directory into a `txt` or `md` file.
 The script is written to run on Windows.
 
 Example of the structure for the `Music` directory.
