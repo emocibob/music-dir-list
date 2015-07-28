@@ -50,6 +50,7 @@ def writeLineInFile(path, dat):
 def dirToFile():
 
     firstDir = True
+    topDirLen = len(TOP_DIR)
 
     if userFileFormat == 1:
         dat = codecsOpen('music_list.txt', 'w', encoding='utf-8')
@@ -64,7 +65,7 @@ def dirToFile():
             firstDir = False
             continue
         else:
-            path = root[len(TOP_DIR):]    # remove the TOP_DIR substring
+            path = root[topDirLen:]    # remove the TOP_DIR substring
             writeLineInFile(path, dat)
 
     dat.write('\n----------\n\n')
