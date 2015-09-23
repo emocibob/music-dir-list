@@ -6,14 +6,12 @@ from codecs import open as codecsOpen
 
 TOP_DIR = 'C:\\Users\\Edvin\\Music'
 SEP = '    '
-FIRST_LINE = True
 ARTIST_COUNT = 0
 ALBUM_COUNT = 0
 
 
 def writeLineInFile(path, dat):
 
-    global FIRST_LINE
     global ARTIST_COUNT
     global ALBUM_COUNT
     depth = path.count('\\')
@@ -26,10 +24,7 @@ def writeLineInFile(path, dat):
         exit()
 
     if depth == 1:
-        if FIRST_LINE:
-            FIRST_LINE = False
-        else:
-            line = '\n' + line
+        line = '- ' + line
         ARTIST_COUNT += 1
 
     elif depth == 2:
@@ -69,8 +64,8 @@ def dirToFile():
             writeLineInFile(path, dat)
 
     dat.write('\n----------\n\n')
-    dat.write('No. of artists: ' + str(ARTIST_COUNT) + '\n')
-    dat.write('No. of albums: ' + str(ALBUM_COUNT))
+    dat.write('- No. of artists: **' + str(ARTIST_COUNT) + '**\n')
+    dat.write('- No. of albums: **' + str(ALBUM_COUNT) + '**')
 
     dat.close()
 
